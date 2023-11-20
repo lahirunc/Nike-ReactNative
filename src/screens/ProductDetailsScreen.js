@@ -24,13 +24,6 @@ const ProductDetailsScreen = ({ route }) => {
 
   const { width } = useWindowDimensions()
 
-  const addToCart = () => {
-    // since the param in the addCartItem is same as product no need to do product: product
-    dispatch(cartSlice.actions.addCartItem({ product }))
-
-    navigation.pop()
-  }
-
   if (isLoading) {
     return <ActivityIndicator />
   }
@@ -39,8 +32,14 @@ const ProductDetailsScreen = ({ route }) => {
     return <Text>{error.error}</Text>
   }
 
-  const product = data.data
+  const product = data?.data
 
+  const addToCart = () => {
+    // since the param in the addCartItem is same as product no need to do product: product
+    dispatch(cartSlice.actions.addCartItem({ product }))
+
+    navigation.pop()
+  }
   return (
     <View>
       <ScrollView>

@@ -7,15 +7,30 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
+    // products
     getProducts: builder.query({
       query: () => 'products',
     }),
     getProduct: builder.query({
       query: (id) => `products/${id}`,
     }),
+    // orders
+    createOrder: builder.mutation({
+      query: (newOrder) => ({
+        url: 'orders',
+        method: 'POST',
+        body: newOrder,
+      }),
+    }),
+    getOrder: builder.query({
+      query: (ref) => `orders/${ref}`,
+    }),
   }),
 })
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetProductsQuery, useGetProductQuery } = apiSlice
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useCreateOrderMutation,
+  useGetOrderQuery,
+} = apiSlice
