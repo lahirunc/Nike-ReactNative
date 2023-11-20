@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Pressable,
@@ -9,12 +10,16 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useGetProductQuery } from '../store/apiSlice'
 import { cartSlice } from '../store/cartSlice'
 
-const ProductDetailsScreen = () => {
+const ProductDetailsScreen = ({ route }) => {
+  const id = route.params.id
+  const { data, isLoading, error } = useGetProductQuery(id)
+
   const navigation = useNavigation()
-  const product = useSelector((state) => state.products.selectedProduct)
+  // const product = useSelector((state) => state.products.selectedProduct)
   const dispatch = useDispatch()
 
   const { width } = useWindowDimensions()
@@ -25,6 +30,16 @@ const ProductDetailsScreen = () => {
 
     navigation.pop()
   }
+
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+
+  if (error) {
+    return <Text>{error.error}</Text>
+  }
+
+  const product = data.data
 
   return (
     <View>
